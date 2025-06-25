@@ -1,50 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gospel Audio Player</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 2rem; background: #f4f4f4; }
-    audio { width: 100%; max-width: 400px; margin: 1rem auto; display: block; }
-    .track-title { font-size: 1.2rem; margin-top: 1rem; }
-  </style>
-</head>
-<body>
-  <h1>🎵 Gospel Audio Player</h1>
-  <div class="track-title" id="track-title">Загрузка...</div>
-  <audio id="player" controls autoplay></audio>
-
-  <script>
-    const playlist = [
-      "https://holychords.pro/storage/music/z7sVf6pJBeaOfI5WDKflz1MqurDkSr9z3cPEiAgf.mp3",
-      "Arn Andersson Mark Brittingham Merethe Soltvedt - The Summit (Nyneve).mp3",
-      "Atlas (Take Earth Back) - Non Omnis Moriar.mp3"
-    ];
-    const titles = [
-      "Песнь 1",
-      "Песнь 2",
-      "Песнь 3"
-    ];
+<script>
+fetch("playlist.json") // путь к твоему JSON-файлу
+  .then(res => res.json())
+  .then(data => {
+    const playlist = data.playlist;
+    const repetition = data.settings.repetition;
+    const pauseBetweenTracks = data.settings.pauseBetweenTracks || 0;
 
     let current = 0;
-    const player = document.getElementById("player");
-    const title = document.getElementById("track-title");
+    const audio = new Audio();
+    audio.src = playlist[0].url;
+    audio.play();
 
-    function loadTrack(index) {
-      player.src = playlist[index];
-      title.textContent = titles[index];
-      player.play();
-    }
-
-    player.addEventListener("ended", () => {
+    audio.onended = () => {
       current++;
-      if (current < playlist.length) {
-        loadTrack(current);
+      if (current >= playlist.length) {
+        if (repetition) {
+          current = 0;
+        } else {
+          return;
+        }
       }
-    });
-
-    loadTrack(current);
-  </script>
-</body>
-</html>
+      setTimeout(() => {
+        audio.src = playlist[current].url;
+        audio.play();
+      }, pauseBetweenTracks * 1000);
+    };
+  });
+</script>
