@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gospel Audio Player</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; background: #f4f4f4; }
+    audio { width: 100%; max-width: 400px; margin: 1rem auto; display: block; }
+    .track-title { font-size: 1.2rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>🎵 Gospel Audio Player</h1>
+  <div class="track-title" id="track-title">Загрузка...</div>
+  <audio id="player" controls autoplay></audio>
+
+  <script>
+    const playlist = [
+      "song1.mp3",
+      "song2.mp3"
+    ];
+    const titles = [
+      "Песнь 1",
+      "Песнь 2"
+    ];
+
+    let current = 0;
+    const player = document.getElementById("player");
+    const title = document.getElementById("track-title");
+
+    function loadTrack(index) {
+      player.src = playlist[index];
+      title.textContent = titles[index];
+      player.play();
+    }
+
+    player.addEventListener("ended", () => {
+      current++;
+      if (current < playlist.length) {
+        loadTrack(current);
+      }
+    });
+
+    loadTrack(current);
+  </script>
+</body>
+</html>
