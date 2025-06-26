@@ -442,12 +442,16 @@ async function loadPlaylist() {
 
 function renderPlaylist() {
   const list = document.getElementById("playlist");
-  const loadingElement = list.querySelector(".loading");
-  if (loadingElement) loadingElement.remove();
 
-  const container = list.querySelector(".tracks-container") || document.createElement("div");
+  // Удаляем старый контейнер и сообщение "не найдены"
+  const oldContainer = list.querySelector(".tracks-container");
+  if (oldContainer) oldContainer.remove();
+  const oldEmpty = list.querySelector(".empty-state");
+  if (oldEmpty) oldEmpty.remove();
+
+  const container = document.createElement("div");
   container.className = "tracks-container";
-  
+
   const filtered = playlist
     .map((track, i) => ({ track, index: i }))
     .filter(({ index }) => filterTrack(index));
@@ -462,7 +466,7 @@ function renderPlaylist() {
 
   container.innerHTML = filtered.map(({ track, index }) => {
     const isActive = index === currentIndex;
-    const img = track.image || "https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png";
+    const img = track.image || "...fallback...";
     return `
       <div class="track-item ${isActive ? 'active' : ''}" onclick="selectTrack(${index})" data-index="${index}">
         <img class="track-icon" src="${img}" alt="${track.title}" loading="lazy">
@@ -474,28 +478,29 @@ function renderPlaylist() {
     `;
   }).join('');
 
-  if (!list.contains(container)) {
-    list.appendChild(container);
-  }
+  list.appendChild(container);
 
   const activeItem = container.querySelector(`.track-item[data-index="${currentIndex}"]`);
-  if (activeItem) {
-    activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
+  if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+
 
 function filterTrack(index) {
   if (!searchText) return true;
   const track = playlist[index];
   const searchLower = searchText.toLowerCase();
-  const title = track.title.toLowerCase();
-  const artist = track.artist ? track.artist.toLowerCase() : '';
+
+  const title = (track.title || '').toLowerCase();
+  const artist = (track.artist || '').toLowerCase();
+  const group = (track.group || '').toLowerCase();
   const number = (index + 1).toString();
-  
-  return title.includes(searchLower) || 
-         artist.includes(searchLower) || 
+
+  return title.includes(searchLower) ||
+         artist.includes(searchLower) ||
+         group.includes(searchLower) || // ← вот это добавлено
          number === searchText.trim();
 }
+
 
 function selectTrack(index) {
   if (index < 0 || index >= playlist.length) return;
