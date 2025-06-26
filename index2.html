@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Gospel Player (UI + Logic)</title>
+  <meta property="og:image" content="https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/unnam.png" />
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    scrollbar-width: thin;
+    scrollbar-color: #1e90ff #202020;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #121212;
+    color: #fff;
+    height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    touch-action: manipulation;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .header {
+    background: #000;
+    padding: 16px;
+    border-bottom: 1px solid #282828;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e90ff;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    color: #b3b3b3;
+    margin-top: 4px;
+  }
+
+  .search-container {
+    position: relative;
+    flex: 1;
+    margin-left: 16px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    background: #242424;
+    border: 1px solid #404040;
+    border-radius: 24px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #b3b3b3;
+    font-size: 16px;
+  }
+
+  .playlist-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 80px;
+    width: 100%;
+  }
+
+  .track-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #282828;
+    cursor: pointer;
+  }
+
+  .track-item.active {
+    background-color: #1e90ff;
+    color: #fff;
+  }
+
+  .track-item.active .track-name,
+  .track-item.active .track-number {
+    color: #fff !important;
+  }
+
+  .track-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .track-info {
+    flex: 1;
+    margin-left: 12px;
+    overflow: hidden;
+  }
+
+  .track-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-number {
+    font-size: 14px;
+    color: #b3b3b3;
+  }
+
+  .player-controls {
+    background: #000;
+    border-top: 1px solid #282828;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+    width: 100%;
+  }
+
+  .current-track-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .current-track-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .current-track-details {
+    margin-left: 12px;
+    overflow: hidden;
+  }
+
+  .current-track-details h4 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .current-track-details p {
+    font-size: 14px;
+    color: #b3b3b3;
+  }
+
+  .playback-controls {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+  }
+
+  .control-btn {
+    background: none;
+    border: none;
+    color: #b3b3b3;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .play-btn {
+    background: #1e90ff;
+    color: #fff;
+    font-size: 20px;
+    margin: 0 8px;
+    border-radius: 50%;
+  }
+
+  .progress-container {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #282828;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: #1e90ff;
+    width: 0%;
+  }
+
+  .visual-section {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .app {
+      flex-direction: row;
+    }
+
+    .playlist-container {
+      width: 33.33%;
+      border-right: 1px solid #282828;
+      padding-bottom: 0;
+    }
+
+    .visual-section {
+      display: flex;
+      width: 66.66%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: radial-gradient(circle at 30% 30%, rgba(30, 144, 255, 0.1) 0%, transparent 80%);
+      position: relative;
+    }
+
+    .visual-section img {
+      max-width: 80%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+      margin-bottom: 24px;
+    }
+
+    .visual-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-controls {
+      position: relative;
+      border-top: none;
+      border-left: 1px solid #282828;
+    }
+
+    .progress-container {
+      top: 0;
+    }
+  }
+
+  /* Скроллбары: Chrome, Edge, Safari */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #1e90ff;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #202020;
+  }
+</style>
+
+</head>
+<body>
+  <div class="app">
+    <div class="playlist-container">
+      <div class="header">
+        <div class="header-content">
+          <div>
+            <div class="logo">Gospel Player</div>
+            <div class="subtitle">Христианская музыка (Сумы © 2025)</div>
+          </div>
+          <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Поиск треков..." oninput="searchTrack(this.value)" />
+          </div>
+        </div>
+      </div>
+      <div id="playlist"></div>
+    </div>
+    <div class="visual-section">
+      <img id="cover" src="https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png" alt="Обложка">
+      <div id="track-title" class="visual-title">Выберите трек</div>
+    </div>
+  </div>
+  <div class="player-controls">
+    <div class="progress-container">
+      <input type="range" id="seekbar" value="0" min="0" step="1" style="width: 100%; appearance: none; height: 4px; background: transparent; position: absolute; top: 0; left: 0; right: 0; z-index: 5; cursor: pointer;">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="current-track-info">
+      <img class="current-track-thumb" id="current-thumb" src="https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png" />
+      <div class="current-track-details">
+        <h4 id="current-title">Название трека</h4>
+        <p id="current-artist">Христианская музыка</p>
+      </div>
+    </div>
+    <div class="playback-controls">
+      <button class="control-btn" onclick="prevTrack()">⏮</button>
+      <button class="control-btn play-btn" onclick="togglePlay()" id="play-btn">▶</button>
+      <button class="control-btn" onclick="nextTrack()">⏭</button>
+    </div>
+  </div>
+
+  <audio id="audio" preload="auto"></audio>
+  <script>
+    const playlistUrl = "https://raw.githubusercontent.com/christian-word/GospelVoice/refs/heads/main/playlist/generated-playlist2.json";
+    let playlist = [];
+    let currentIndex = 0;
+    let audio = document.getElementById("audio");
+    let searchText = "";
+    let isSeeking = false;
+    const seekbar = document.getElementById("seekbar");
+
+    async function loadPlaylist() {
+      const res = await fetch(playlistUrl);
+      const data = await res.json();
+      playlist = data.playlist || [];
+      const saved = localStorage.getItem("gospelPlayerIndex");
+      if (saved && playlist[saved]) currentIndex = parseInt(saved);
+      renderPlaylist();
+      loadTrack(currentIndex);
+    }
+
+    function renderPlaylist() {
+      const list = document.getElementById("playlist");
+      list.innerHTML = "";
+      playlist.forEach((track, i) => {
+        if (!filterTrack(i)) return;
+        const div = document.createElement("div");
+        div.className = "track-item";
+        if (i === currentIndex) {
+          div.classList.add("active");
+          // прокрутка в поле видимости
+          setTimeout(() => div.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+        }
+        div.innerHTML = `
+          <img class="track-icon" src="${track.image || 'https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png'}" />
+          <div class="track-info">
+            <div class="track-name">${track.title}</div>
+            <div class="track-number">#${i + 1} • ${track.group || 'Исполнитель'}</div>
+          </div>`;
+        div.onclick = () => { currentIndex = i; loadTrack(i); audio.play(); };
+        list.appendChild(div);
+      });
+    }
+
+    function loadTrack(index) {
+      if (!playlist[index]) return;
+      const track = playlist[index];
+      document.getElementById("track-title").textContent = `${index + 1}. ${track.title}`;
+      document.getElementById("cover").src = track.image || "https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png";
+      document.getElementById("current-thumb").src = track.image || "https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png";
+      document.getElementById("current-title").textContent = `${track.title}`;
+      document.getElementById("current-artist").textContent = track.group || "Христианская музыка";
+      audio.src = track.url;
+      audio.load();
+      localStorage.setItem("gospelPlayerIndex", index);
+      currentIndex = index;
+      renderPlaylist();
+      updatePlayButton();
+    }
+
+    function togglePlay() {
+      if (audio.paused) audio.play(); else audio.pause();
+      updatePlayButton();
+    }
+
+    function updatePlayButton() {
+      document.getElementById("play-btn").textContent = audio.paused ? "▶" : "❚❚";
+    }
+
+    function nextTrack() {
+      for (let i = currentIndex + 1; i < playlist.length; i++) {
+        if (filterTrack(i)) { currentIndex = i; loadTrack(i); audio.play(); return; }
+      }
+    }
+
+    function prevTrack() {
+      for (let i = currentIndex - 1; i >= 0; i--) {
+        if (filterTrack(i)) { currentIndex = i; loadTrack(i); audio.play(); return; }
+      }
+    }
+
+    function searchTrack(query) {
+      searchText = query.toLowerCase();
+      for (let i = 0; i < playlist.length; i++) {
+        const t = playlist[i].title.toLowerCase();
+        const g = (playlist[i].group || "").toLowerCase();
+        if (t.includes(searchText) || g.includes(searchText) || ("" + (i + 1)) === searchText.trim()) {
+          loadTrack(i); break;
+        }
+      }
+      renderPlaylist();
+    }
+
+    function filterTrack(index) {
+      if (!searchText) return true;
+      const t = playlist[index].title.toLowerCase();
+      const g = (playlist[index].group || "").toLowerCase();
+      return t.includes(searchText) || g.includes(searchText) || ("" + (index + 1)) === searchText.trim();
+    }
+
+    audio.onended = nextTrack;
+
+    audio.ontimeupdate = () => {
+      if (!isSeeking && audio.duration) {
+        const progress = audio.currentTime / audio.duration;
+        document.getElementById("progress-bar").style.width = (progress * 100) + "%";
+        seekbar.max = audio.duration;
+        seekbar.value = audio.currentTime;
+      }
+    };
+
+    seekbar.oninput = () => {
+      isSeeking = true;
+    };
+
+    seekbar.onchange = () => {
+      audio.currentTime = seekbar.value;
+      isSeeking = false;
+    };
+
+    loadPlaylist();
+  </script>
+
+</body>
+</html>
