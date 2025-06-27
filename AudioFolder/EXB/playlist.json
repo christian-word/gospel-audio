@@ -1,5 +1,4 @@
-
-{
+﻿{
   "generatedAt": "2025-06-26T22:08:43+03:00",
   "settings": {
     "repetition": true,
@@ -90,6 +89,13 @@
       "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/gurt.jpg",
       "duration": 0,
       "group": "гурт"
+    },
+    {
+      "title": "Ми вічнії з тобою",
+      "url": "AudioFolder/EXB/Ми%20вічнії%20з%20тобою.mp3",
+      "image": "",
+      "duration": 0,
+      "group": "Охріменки"
     },
     {
       "title": "Нехай поклоняться Тобі (гурт)",
