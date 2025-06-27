@@ -22,14 +22,14 @@
     {
       "title": "Відлітають роки,мов птахи восени. Влад та Тимофій Охріменки",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Відлітають%20роки,мов%20птахи%20восени.%20Влад%20та%20Тимофій%20Охріменки,%2015.12.2024.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
     {
       "title": "Висит страдая, распят Христос",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Висит%20страдая,%20распят%20Христос.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -45,7 +45,7 @@
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Дар%20благодаті(гурт).mp3",
       "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/gurt.jpg",
       "duration": 0,
-      "group": "Unknown"
+      "group": "Гурт"
     },
     {
       "title": "Знаходиться світ в дні останні (гурт)",
@@ -64,7 +64,7 @@
     {
       "title": "Люби Людей",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Люби%20Людей-Охрим.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -92,7 +92,7 @@
     {
       "title": "Ми вічнії з тобою",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Ми%20вічнії%20з%20тобою.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -106,28 +106,28 @@
     {
       "title": "Охріменко Тимофій",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Охріменко%20Тимофій%2030%20березня%202025%20року.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
     {
       "title": "Охріменко дит.служ.",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Охрим.дит_служ..mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
     {
       "title": "Твоя смерть и воскресение. Охріменко Влад & Тимофій",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Твоя%20смерть%20и%20воскресение.%20Охріменко%20Влад%20&%20Тимофій.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
     {
       "title": "Темное небо, багровый закат",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Темное%20небо,%20багровый%20закат.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -148,7 +148,7 @@
     {
       "title": "Я жизнь отдал за тебя. Влад и Тимофей Охрименки",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Я%20жизнь%20отдал%20за%20тебя.%20Влад%20и%20Тимофей%20Охрименки,%2005.01.2025.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -162,21 +162,21 @@
     {
       "title": "Якщо сил немає і стомився ти",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Якщо%20сил%20немає%20і%20стомився%20ти.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
     {
       "title": "А где-то за окном облака",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/А%20где-то%20за%20окном%20облака.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
     {
       "title": "Аудіо_Охріменки",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/аудіо_Охріменки.mp3",
-      "image": "",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohr.jpg",
       "duration": 0,
       "group": "Охріменки"
     }
