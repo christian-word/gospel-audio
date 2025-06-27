@@ -6,9 +6,9 @@
   },
   "playlist": [
     {
-      "title": "В_сльозах приходжу я до Тебе (гурт)",
-      "url": "В%20сльозах%20приходжу%20я%20до%20Тебе%20(гурт).mp3",
-      "image": "",
+      "title": "В сльозах приходжу я до Тебе (гурт)",
+      "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Ми%20вічнії%20з%20тобою.mp3",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/gurt.jpg",
       "duration": 0,
       "group": "гурт"
     },
