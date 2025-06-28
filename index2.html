@@ -201,11 +201,17 @@
     }
     .play-btn {
       background: var(--primary-color);
-      color: #fff;
+      color: #fff !important;
       font-size: 20px;
       margin: 0 8px;
       border-radius: 50%;
       transition: background-color 0.3s ease;
+      font-family: inherit;
+      line-height: 1;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .progress-container {
       position: absolute;
@@ -321,7 +327,7 @@
       <div class="header">
         <div class="header-content">
           <div>
-            <div class="logo">Gospel Player  ⚙️</div>
+            <div class="logo">Gospel Player + ⚙️</div>
             <div class="subtitle">Христианская музыка (Сумы © 2025)</div>
           </div>
           <div class="search-container">
