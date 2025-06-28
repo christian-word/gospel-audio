@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Gospel Player (Сумы © 2025)</title>
-    <meta property="og:image" content="https://raw.githubusercontent.com/christian-word/gospel-audio/main/unnam1.png" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/christian-word/gospel-audio/main/GPlayer.jpg" />
   <style>
     * {
       margin: 0;
@@ -328,7 +328,7 @@
       <div class="header">
         <div class="header-content">
           <div>
-            <div class="logo">Gospel Player + ⚙️</div>
+            <div class="logo">Gospel Player  ⚙️</div>
             <div class="subtitle">Христианская музыка (Сумы © 2025)</div>
           </div>
           <div class="search-container">
@@ -406,14 +406,55 @@
       }
     }
 
+    // Кэширование плейлистов
+    const playlistCache = new Map();
+    
     async function loadPlaylist() {
-      const res = await fetch(playlistUrl);
-      const data = await res.json();
-      playlist = data.playlist || [];
-      const saved = localStorage.getItem("gospelPlayerIndex");
-      if (saved && playlist[saved]) currentIndex = parseInt(saved);
-      renderPlaylist();
-      loadTrack(currentIndex);
+      try {
+        showLoadingState(true);
+        
+        // Проверяем кэш
+        if (playlistCache.has(playlistUrl)) {
+          const data = playlistCache.get(playlistUrl);
+          playlist = data.playlist || [];
+        } else {
+          // Загружаем с повторными попытками
+          const data = await fetchWithRetry(playlistUrl);
+          playlist = data.playlist || [];
+          playlistCache.set(playlistUrl, data);
+        }
+        
+        const saved = localStorage.getItem("gospelPlayerIndex");
+        if (saved && playlist[saved]) currentIndex = parseInt(saved);
+        renderPlaylist();
+        loadTrack(currentIndex);
+        showLoadingState(false);
+      } catch (error) {
+        showError("Не удалось загрузить плейлист. Проверьте подключение к интернету.");
+        console.error("Ошибка загрузки плейлиста:", error);
+      }
+    }
+    
+    // Функция с повторными попытками загрузки
+    async function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
+      for (let i = 0; i < maxRetries; i++) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 сек таймаут
+          
+          const response = await fetch(url, { 
+            signal: controller.signal,
+            cache: 'default' // Используем браузерный кэш
+          });
+          clearTimeout(timeoutId);
+          
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          if (i === maxRetries - 1) throw error;
+          await new Promise(resolve => setTimeout(resolve, delay * (i + 1)));
+        }
+      }
     }
 
     function renderPlaylist() {
@@ -446,17 +487,64 @@
     function loadTrack(index) {
       if (!playlist[index]) return;
       const track = playlist[index];
+      
+      // Оптимизация: предзагрузка следующего трека
+      preloadNextTrack(index);
+      
       document.getElementById("track-title").textContent = `${index + 1}. ${track.title}`;
-      document.getElementById("cover").src = track.image || "https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png";
-      document.getElementById("current-thumb").src = track.image || "https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png";
+      
+      // Оптимизированная загрузка изображений с fallback
+      loadImageOptimized(track.image, "cover");
+      loadImageOptimized(track.image, "current-thumb");
+      
       document.getElementById("current-title").textContent = `${track.title}`;
       document.getElementById("current-artist").textContent = track.group || "Христианская музыка";
-      audio.src = track.url;
-      audio.load();
+      
+      // Оптимизация аудио для слабых устройств
+      if (audio.src !== track.url) {
+        audio.src = track.url;
+        audio.preload = navigator.connection && navigator.connection.effectiveType === '2g' ? 'metadata' : 'auto';
+        audio.load();
+      }
+      
       localStorage.setItem("gospelPlayerIndex", index);
       currentIndex = index;
       renderPlaylist();
       updatePlayButton();
+    }
+    
+    // Предзагрузка следующего трека для бесшовного воспроизведения
+    let preloadAudio = null;
+    function preloadNextTrack(currentIndex) {
+      const nextIndex = getNextTrackIndex(currentIndex);
+      if (nextIndex !== -1 && playlist[nextIndex]) {
+        if (!preloadAudio) preloadAudio = new Audio();
+        preloadAudio.src = playlist[nextIndex].url;
+        preloadAudio.preload = 'metadata';
+      }
+    }
+    
+    function getNextTrackIndex(currentIndex) {
+      for (let i = currentIndex + 1; i < playlist.length; i++) {
+        if (filterTrack(i)) return i;
+      }
+      return -1;
+    }
+    
+    // Оптимизированная загрузка изображений
+    function loadImageOptimized(src, elementId) {
+      const element = document.getElementById(elementId);
+      const defaultImage = "https://raw.githubusercontent.com/ruyriy/Audio-christ/main/ICO/church_image.png";
+      
+      if (!src || src === defaultImage) {
+        element.src = defaultImage;
+        return;
+      }
+      
+      const img = new Image();
+      img.onload = () => element.src = src;
+      img.onerror = () => element.src = defaultImage;
+      img.src = src;
     }
 
     function togglePlay() {
@@ -469,15 +557,80 @@
     }
 
     function nextTrack() {
-      for (let i = currentIndex + 1; i < playlist.length; i++) {
-        if (filterTrack(i)) { currentIndex = i; loadTrack(i); audio.play(); return; }
+      const nextIndex = getNextTrackIndex(currentIndex);
+      if (nextIndex !== -1) {
+        currentIndex = nextIndex;
+        loadTrack(nextIndex);
+        audio.play().catch(handlePlayError);
       }
     }
 
     function prevTrack() {
       for (let i = currentIndex - 1; i >= 0; i--) {
-        if (filterTrack(i)) { currentIndex = i; loadTrack(i); audio.play(); return; }
+        if (filterTrack(i)) {
+          currentIndex = i;
+          loadTrack(i);
+          audio.play().catch(handlePlayError);
+          return;
+        }
       }
+    }
+    
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play().catch(handlePlayError);
+      } else {
+        audio.pause();
+      }
+      updatePlayButton();
+    }
+    
+    // Обработка ошибок воспроизведения
+    function handlePlayError(error) {
+      console.error("Ошибка воспроизведения:", error);
+      showError("Не удалось воспроизвести трек. Попробуйте следующий.");
+      
+      // Автоматически переходим к следующему треку при ошибке
+      setTimeout(() => {
+        const nextIndex = getNextTrackIndex(currentIndex);
+        if (nextIndex !== -1) {
+          currentIndex = nextIndex;
+          loadTrack(nextIndex);
+          audio.play().catch(() => showError("Проблемы с сетью. Проверьте подключение."));
+        }
+      }, 2000);
+    }
+    
+    // Показ состояния загрузки
+    function showLoadingState(isLoading) {
+      const playlist = document.getElementById("playlist");
+      if (isLoading) {
+        playlist.innerHTML = '<div style="padding: 20px; text-align: center; color: #b3b3b3;">Загрузка плейлиста...</div>';
+      }
+    }
+    
+    // Показ ошибок пользователю
+    function showError(message) {
+      // Создаём временное уведомление
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 1001;
+        background: #e74c3c; color: white; padding: 12px 20px;
+        border-radius: 8px; font-size: 14px; max-width: 300px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transform: translateX(100%); transition: transform 0.3s ease;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      // Анимация появления
+      setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+      
+      // Автоматическое скрытие
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => document.body.removeChild(notification), 300);
+      }, 4000);
     }
 
     function searchTrack(query) {
