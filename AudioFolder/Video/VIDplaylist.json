@@ -1,0 +1,30 @@
+﻿{
+  "generatedAt": "2025-06-26T22:08:43+03:00",
+  "settings": {
+    "repetition": true,
+    "pauseBetweenTracks": 0
+  },
+  "playlist": [
+     {
+      "title": "Навіки",
+      "url": "https://youtu.be/MFNDvlvs0Fo",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/",
+      "duration": 0,
+      "group": "Хор церкви ''Дім Євангелія''"
+    },
+     {
+      "title": "Не дивись з тривогою у завтра",
+      "url": "Cok5-Y3XtzU",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/",
+      "duration": 0,
+      "group": "Тимофій, Юлія та Владислав Охріменки"
+    },
+      {
+      "title": "Однажды Я Понял Особенно Остро",
+      "url": "https://ia801303.us.archive.org/23/items/30.03.2025/%D0%9E%D0%B4%D0%BD%D0%B0%D0%B6%D0%B4%D1%8B%20%D1%8F%20%D0%BF%D0%BE%D0%BD%D1%8F%D0%BB%20%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%20%D0%BE%D1%81%D1%82%D1%80%D0%BE%20%D0%A2%D0%B8%D0%BC%D0%BE%D1%84%D0%B5%D0%B9%20%D0%9E%D1%85%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D0%BA%D0%BE%2C%2030.03.2025.mp4",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/",
+      "duration": 0,
+      "group": "Тимофей Охрименкот"
+    }
+  ]
+}
