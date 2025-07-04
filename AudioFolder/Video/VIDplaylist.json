@@ -8,9 +8,9 @@
    {
     title: "Навіки (Хор)",
     url: "",
-    image: "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/church_image.png",
+    image: "",
     duration: 0,
-    group: "Хор церкви ''Дім Євангелія''"
+    group: ""
   },
   {
     title: "Не дивись з тривогою у завтра _",
