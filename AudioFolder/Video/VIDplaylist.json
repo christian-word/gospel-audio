@@ -5,7 +5,13 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
-
+    {
+      "title": "",
+      "url": "",
+      "image": "",
+      "duration": 0,
+      "group": ""
+    },
     {
       "title": "Екатерина Лихачева: Благослови",
       "url": "https://fonki.pro/plugin/sounds/uploads/202411090944043.mp3",
