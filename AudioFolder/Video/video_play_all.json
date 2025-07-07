@@ -5,6 +5,13 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
+     {
+      "title": "З кожним днем дороге небо зоряне",
+      "url": "https://www.youtube.com/embed/7RfAR7C7nrQ",
+      "image": "",
+      "duration": 0,
+      "group": "Группа Гурт Арфочки"
+    },
     {
       "title": "Как хочется сказать 2025",
       "url": "https://www.youtube.com/embed/vhbE3o1DJCU",
