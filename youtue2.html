@@ -1,0 +1,1030 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gospel Music Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         :root {
+            --primary-color: #4fc3f7;
+            --secondary-color: #81c784;
+            --accent-color: #64b5f6;
+            --bg-color: #1a1d29;
+            --surface-color: #252936;
+            --surface-hover: #2a2d3a;
+            --surface-active: #303547;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --text-muted: #5f6368;
+            --border-color: #3c4043;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --shadow-hover: rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            --gradient-secondary: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+            --gradient-hover: linear-gradient(135deg, rgba(79, 195, 247, 0.1) 0%, rgba(41, 182, 246, 0.1) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-color) 0%, #1e2139 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Кастомизированный скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface-color);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 12px;
+            margin-top: 70px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 16px;
+            background: rgba(37, 41, 54, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .settings-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 12px;
+            padding: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hover);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .settings-btn:hover::before {
+            opacity: 1;
+        }
+
+        .settings-btn i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .player-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            padding: 12px;
+            background: rgba(26, 29, 41, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 50;
+            display: none;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .player-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            background: var(--surface-color);
+            box-shadow: 0 8px 32px var(--shadow-color);
+        }
+
+        #player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 16px;
+        }
+
+        .fullscreen-btn, .close-player-btn {
+            position: absolute;
+            background: rgba(37, 41, 54, 0.9);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fullscreen-btn {
+            bottom: 12px;
+            right: 12px;
+        }
+
+        .close-player-btn {
+            top: 12px;
+            right: 12px;
+        }
+
+        .fullscreen-btn:hover, .close-player-btn:hover {
+            transform: scale(1.1);
+            background: rgba(79, 195, 247, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 20px rgba(79, 195, 247, 0.3);
+        }
+
+        .playlists {
+            margin-top: 12px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .playlist-item {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .playlist-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hover);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .playlist-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px var(--shadow-hover);
+            border-color: var(--primary-color);
+            background: var(--surface-hover);
+        }
+
+        .playlist-item:hover::before {
+            opacity: 1;
+        }
+
+        .playlist-item:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .playlist-item i {
+            margin-right: 16px;
+            font-size: 1.8rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .playlist-item h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.01em;
+        }
+
+        .tracks-list {
+            margin-top: 12px;
+            display: none;
+        }
+
+        .player-container:not([style*="display: none"]) ~ .container .tracks-list #tracksContainer {
+            padding-top: calc(56.25vw + 24px);
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 12px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .track-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hover);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .track-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 6px 20px var(--shadow-hover);
+            border-color: var(--primary-color);
+            background: var(--surface-hover);
+        }
+
+        .track-item:hover::before {
+            opacity: 1;
+        }
+
+        .track-number {
+            width: 32px;
+            text-align: center;
+            margin-right: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .track-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            margin-right: 12px;
+            background: var(--surface-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .track-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .track-item:hover .track-image img {
+            transform: scale(1.05);
+        }
+
+        .track-image i {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .track-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .track-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .track-group {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .back-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-hover);
+            background: var(--surface-hover);
+            border-color: var(--primary-color);
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 29, 41, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-settings {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            border-radius: 12px;
+            padding: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .close-settings:hover {
+            transform: scale(1.1);
+            background: var(--surface-hover);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .setting-item {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .setting-label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            margin-right: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--surface-hover);
+        }
+
+        .checkbox-container input[type="checkbox"]:checked {
+            background: var(--gradient-primary);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-container input[type="checkbox"]:checked::before {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .checkbox-container input[type="checkbox"]:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2);
+        }
+
+        .checkbox-container span {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120px;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--surface-color);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        html:-webkit-full-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+        }
+
+        .fullscreen .player-container {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .fullscreen .player-wrapper {
+            padding-bottom: 0;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .fullscreen .fullscreen-btn {
+            display: none;
+        }
+
+        .error-message {
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 24px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin: 12px 0;
+        }
+
+        /* Анимации появления элементов */
+        .playlist-item, .track-item {
+            animation: slideInUp 0.5s ease;
+        }
+
+        .playlist-item:nth-child(1) { animation-delay: 0.1s; }
+        .playlist-item:nth-child(2) { animation-delay: 0.2s; }
+        .playlist-item:nth-child(3) { animation-delay: 0.3s; }
+        .playlist-item:nth-child(4) { animation-delay: 0.4s; }
+        .playlist-item:nth-child(5) { animation-delay: 0.5s; }
+
+        .track-item:nth-child(1) { animation-delay: 0.05s; }
+        .track-item:nth-child(2) { animation-delay: 0.1s; }
+        .track-item:nth-child(3) { animation-delay: 0.15s; }
+        .track-item:nth-child(4) { animation-delay: 0.2s; }
+        .track-item:nth-child(5) { animation-delay: 0.25s; }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive улучшения */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .playlist-item, .track-item {
+                padding: 16px 12px;
+            }
+            
+            .settings-panel {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Gospel Music YouTube</h1>
+        <button class="settings-btn" id="settingsBtn">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
+
+    <div class="player-container" id="playerContainer">
+        <div class="player-wrapper">
+            <iframe id="player" frameborder="0" allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+            </iframe>
+            <button class="fullscreen-btn" id="fullscreenBtn">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button class="close-player-btn" id="closePlayerBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="playlists" id="playlists">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+
+        <div class="tracks-list" id="tracksList">
+            <button class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i> Назад к плейлистам
+            </button>
+            <div id="tracksContainer"></div>
+        </div>
+    </div>
+
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h2 class="settings-title">Настройки</h2>
+            <button class="close-settings" id="closeSettings">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="setting-item">
+            <label class="setting-label">Повторять плейлист</label>
+            <div class="checkbox-container">
+                <input type="checkbox" id="repeatPlaylist" checked>
+                <span>Включено</span>
+            </div>
+        </div>
+        
+        <div class="setting-item">
+            <label class="setting-label">Пауза между треками</label>
+            <div class="checkbox-container">
+                <input type="checkbox" id="pauseBetweenTracks">
+                <span>Включено</span>
+            </div>
+        </div>
+    </div>
+
+    
+<script>
+// Конфигурация
+const playlistListUrl = "https://www.dl.dropboxusercontent.com/scl/fi/62h0fz3zs0yhdoog27wbl/Vid_playlists.json?rlkey=xqd5izkrkep415j4owfudlsai&st=722p2kkz&dl";
+const CACHE_EXPIRATION = 30 * 60 * 1000; // 30 минут кэширования
+const THUMBNAIL_CACHE_EXPIRATION = 24 * 60 * 60 * 1000; // 24 часа кэширования миниатюр
+
+// DOM элементы
+const playerContainer = document.getElementById('playerContainer');
+const player = document.getElementById('player');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+const closePlayerBtn = document.getElementById('closePlayerBtn');
+const playlistsContainer = document.getElementById('playlists');
+const tracksList = document.getElementById('tracksList');
+const tracksContainer = document.getElementById('tracksContainer');
+const backBtn = document.getElementById('backBtn');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsPanel = document.getElementById('settingsPanel');
+const closeSettings = document.getElementById('closeSettings');
+const repeatPlaylist = document.getElementById('repeatPlaylist');
+const pauseBetweenTracks = document.getElementById('pauseBetweenTracks');
+
+// Состояние приложения
+let currentPlaylist = null;
+let currentTrackIndex = 0;
+let playlists = [];
+let tracks = [];
+let cachedPlaylists = null;
+let lastCacheTime = 0;
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+    loadPlaylists();
+    setupEventListeners();
+    playerContainer.style.display = 'none'; // Скрываем плеер при загрузке
+});
+
+// Загрузка списка плейлистов с кэшированием
+async function loadPlaylists() {
+    try {
+        // Проверяем кэш
+        if (cachedPlaylists && Date.now() - lastCacheTime < CACHE_EXPIRATION) {
+            playlists = cachedPlaylists;
+            renderPlaylists();
+            return;
+        }
+
+        playlistsContainer.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+        
+        const response = await fetch(playlistListUrl);
+        playlists = await response.json();
+        
+        // Сохраняем в кэш
+        cachedPlaylists = playlists;
+        lastCacheTime = Date.now();
+        
+        renderPlaylists();
+    } catch (error) {
+        console.error('Error loading playlists:', error);
+        showError('Не удалось загрузить плейлисты. Проверьте подключение к интернету.');
+    }
+}
+
+// Быстрая загрузка треков при возврате назад
+function returnToPlaylists() {
+    tracksList.style.display = 'none';
+    playlistsContainer.style.display = 'block';
+    playerContainer.style.display = 'none';
+    player.src = '';
+    
+    // Если данные уже загружены, просто показываем их
+    if (cachedPlaylists) {
+        playlists = cachedPlaylists;
+        renderPlaylists();
+    } else {
+        loadPlaylists();
+    }
+}
+
+// Загрузка треков из плейлиста с кэшированием
+async function loadTracks(playlistUrl) {
+    try {
+        playlistsContainer.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+        
+        const cacheKey = `playlist_${encodeURIComponent(playlistUrl)}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        const cacheTime = localStorage.getItem(`${cacheKey}_time`);
+        
+        // Проверяем кэш
+        if (cachedData && cacheTime && Date.now() - parseInt(cacheTime) < CACHE_EXPIRATION) {
+            currentPlaylist = JSON.parse(cachedData);
+            tracks = currentPlaylist.playlist;
+            renderTracks();
+            playlistsContainer.style.display = 'none';
+            tracksList.style.display = 'block';
+            return;
+        }
+        
+        const response = await fetch(playlistUrl);
+        const data = await response.json();
+        currentPlaylist = data;
+        tracks = data.playlist;
+        
+        // Сохраняем в кэш
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+        localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
+        
+        renderTracks();
+        playlistsContainer.style.display = 'none';
+        tracksList.style.display = 'block';
+    } catch (error) {
+        console.error('Error loading tracks:', error);
+        showError('Не удалось загрузить треки. Проверьте подключение к интернету.');
+    }
+}
+
+// Функция для получения URL миниатюры YouTube с кэшированием
+function getYouTubeThumbnail(url, quality = 'mqdefault') {
+    const videoId = extractVideoId(url);
+    if (!videoId) return null;
+    
+    // Проверяем кэш миниатюр
+    const thumbnailCacheKey = `yt_thumb_${videoId}_${quality}`;
+    const cachedThumbnail = localStorage.getItem(thumbnailCacheKey);
+    const cacheTime = localStorage.getItem(`${thumbnailCacheKey}_time`);
+    
+    if (cachedThumbnail && cacheTime && Date.now() - parseInt(cacheTime) < THUMBNAIL_CACHE_EXPIRATION) {
+        return cachedThumbnail;
+    }
+    
+    const qualities = {
+        'default': 'default.jpg',
+        'mqdefault': 'mqdefault.jpg',
+        'hqdefault': 'hqdefault.jpg',
+        'sddefault': 'sddefault.jpg',
+        'maxresdefault': 'maxresdefault.jpg'
+    };
+    
+    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${qualities[quality] || qualities['default']}`;
+    
+    // Кэшируем URL миниатюры
+    localStorage.setItem(thumbnailCacheKey, thumbnailUrl);
+    localStorage.setItem(`${thumbnailCacheKey}_time`, Date.now().toString());
+    
+    return thumbnailUrl;
+}
+
+// Отображение списка плейлистов
+function renderPlaylists() {
+    if (!playlists || playlists.length === 0) {
+        showError('Нет доступных плейлистов');
+        return;
+    }
+
+    playlistsContainer.innerHTML = '';
+    playlists.forEach(playlist => {
+        const playlistItem = document.createElement('div');
+        playlistItem.className = 'playlist-item';
+        playlistItem.innerHTML = `
+            <i class="fas fa-music"></i>
+            <h3>${playlist.title}</h3>
+        `;
+        playlistItem.addEventListener('click', () => loadTracks(playlist.url));
+        playlistsContainer.appendChild(playlistItem);
+    });
+}
+
+// Отображение списка треков
+function renderTracks() {
+    if (!tracks || tracks.length === 0) {
+        showError('Нет доступных треков в этом плейлисте');
+        return;
+    }
+
+    tracksContainer.innerHTML = '';
+    tracks.forEach((track, index) => {
+        // Получаем миниатюру YouTube, если нет своей иконки
+        const thumbnailUrl = track.image || getYouTubeThumbnail(track.url);
+        
+        const trackItem = document.createElement('div');
+        trackItem.className = 'track-item';
+        trackItem.innerHTML = `
+            <div class="track-number">${index + 1}</div>
+            <div class="track-image">
+                ${thumbnailUrl ? `<img src="${thumbnailUrl}" alt="${track.title}" loading="lazy">` : '<i class="fas fa-music"></i>'}
+            </div>
+            <div class="track-info">
+                <div class="track-title">${track.title}</div>
+                <div class="track-group">${track.group || ''}</div>
+            </div>
+        `;
+        trackItem.addEventListener('click', () => playTrack(index));
+        tracksContainer.appendChild(trackItem);
+    });
+}
+
+// Воспроизведение трека
+function playTrack(index) {
+    currentTrackIndex = index;
+    const track = tracks[index];
+    
+    const videoId = extractVideoId(track.url);
+    if (!videoId) {
+        showError('Невозможно воспроизвести этот трек');
+        return;
+    }
+    
+    player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+    playerContainer.style.display = 'block';
+}
+
+// Извлечение ID видео из URL YouTube
+function extractVideoId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
+
+// Показать сообщение об ошибке
+function showError(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    
+    if (playlistsContainer.style.display !== 'none') {
+        playlistsContainer.innerHTML = '';
+        playlistsContainer.appendChild(errorElement);
+    } else {
+        tracksContainer.innerHTML = '';
+        tracksContainer.appendChild(errorElement);
+    }
+}
+
+// Настройка обработчиков событий
+function setupEventListeners() {
+    // Кнопка полноэкранного режима
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    
+    // Кнопка закрытия плеера
+    closePlayerBtn.addEventListener('click', () => {
+        // Выходим из полноэкранного режима перед закрытием
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+        playerContainer.style.display = 'none';
+        player.src = '';
+    });
+    
+    // Кнопка "Назад"
+    backBtn.addEventListener('click', returnToPlaylists);
+    
+    // Кнопка настроек
+    settingsBtn.addEventListener('click', () => {
+        settingsPanel.style.display = 'flex';
+    });
+    
+    // Закрытие настроек
+    closeSettings.addEventListener('click', () => {
+        settingsPanel.style.display = 'none';
+    });
+    
+    // Обработка изменения настроек
+    repeatPlaylist.addEventListener('change', (e) => {
+        if (currentPlaylist) {
+            currentPlaylist.settings.repetition = e.target.checked;
+        }
+    });
+    
+    pauseBetweenTracks.addEventListener('change', (e) => {
+        if (currentPlaylist) {
+            currentPlaylist.settings.pauseBetweenTracks = e.target.checked ? 1 : 0;
+        }
+    });
+    
+    // Обработка полноэкранного режима
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    
+    // Обработка ошибок полноэкранного режима
+    playerContainer.addEventListener('fullscreenerror', (e) => {
+        console.error('Fullscreen error:', e);
+    });
+    
+    playerContainer.addEventListener('webkitfullscreenerror', (e) => {
+        console.error('Webkit fullscreen error:', e);
+    });
+}
+
+// Переключение полноэкранного режима
+function toggleFullscreen() {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        // Перед входом в полноэкранный режим убедимся, что плеер видим
+        playerContainer.style.display = 'block';
+        if (playerContainer.requestFullscreen) {
+            playerContainer.requestFullscreen().catch(err => {
+                console.error('Error attempting to enable fullscreen:', err);
+            });
+        } else if (playerContainer.webkitRequestFullscreen) {
+            playerContainer.webkitRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+}
+
+// Обработчик изменения полноэкранного режима
+function handleFullscreenChange() {
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+    
+    if (isFullscreen) {
+        document.body.classList.add('fullscreen');
+    } else {
+        document.body.classList.remove('fullscreen');
+        // Явно скрываем плеер при выходе из полноэкранного режима
+        playerContainer.style.display = 'none';
+        player.src = '';
+    }
+}
+</script>
+</body>
+</html>
