@@ -1,0 +1,30 @@
+﻿{
+  "generatedAt": "2025-07-07T22:08:43+03:00",
+  "settings": {
+    "repetition": true,
+    "pauseBetweenTracks": 0
+  },
+  "playlist": [
+    {
+      "title": "Христианская песня ''Ты плакал''",
+      "url": "https://www.youtube.com/embed/F_0JHnn0U-0",
+      "image": "",
+      "duration": 0,
+      "group": "Поэт Алексей Дунаев"
+    },
+    {
+      "title": "Я силы попросил для ног... — песня для тех, кто устал, но услышал зов Божьей любви",
+      "url": "https://www.youtube.com/eKB-dSeOqsc",
+      "image": "",
+      "duration": 0,
+      "group": "Поэт Алексей Дунаев"
+    },
+    {
+      "title": "Вже потихеньку день згасав",
+      "url": "https://www.youtube.com/481AGUgQsYk",
+      "image": "",
+      "duration": 0,
+      "group": "Гурт Єднання"
+    }
+  ]
+}
