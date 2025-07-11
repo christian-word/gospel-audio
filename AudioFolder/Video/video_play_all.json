@@ -5,6 +5,13 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
+      {
+      "title": "Вже потихеньку день згасав",
+      "url": "https://youtu.be/481AGUgQsYk",
+      "image": "",
+      "duration": 0,
+      "group": "Гурт Єднання"
+    },
      {
       "title": "З кожним днем дороге небо зоряне",
       "url": "https://www.youtube.com/embed/7RfAR7C7nrQ",
