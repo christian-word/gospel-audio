@@ -5,6 +5,13 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
+       {
+      "title": "Мой Спаситель",
+      "url": "https://www.youtube.com/embed/rg-ljXffWz0",
+      "image": "",
+      "duration": 0,
+      "group": "Христианская песня (AI)"
+    },
      {
       "title": "З кожним днем дороге небо зоряне",
       "url": "https://www.youtube.com/embed/7RfAR7C7nrQ",
