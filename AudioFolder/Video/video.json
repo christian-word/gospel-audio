@@ -6,11 +6,18 @@
   },
   "playlist": [
     {
-      "title": "СЕМЕЙНАЯ ДРАМА О ВЕРЕ!",
+      "title": "ВСТРЕЧИ С БОГОМ",
       "url": "https://youtu.be/w_8xK_9NgKY",
       "image": "",
       "duration": 0,
-      "group": "ВСТРЕЧИ С БОГОМ"
+      "group": "СЕМЕЙНАЯ ДРАМА О ВЕРЕ!"
+    },
+    {
+      "title": "Хижина",
+      "url": "https://youtu.be/ycxXsi7JkkE",
+      "image": "",
+      "duration": 0,
+      "group": "Христианский фильм"
     }
   ]
 }
