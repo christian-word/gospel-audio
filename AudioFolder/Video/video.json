@@ -5,12 +5,8 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
-    {
-      "title": "",
-      "url": "https://www.youtube.com/embed/",
-      "image": "",
-      "duration": 0,
-      "group": ""
-    }
-  ]
-}
+  {
+    "title": "СЕМЕЙНАЯ ДРАМА О ВЕРЕ!",
+    "url": "https://youtu.be/w_8xK_9NgKY"
+  }
+]
