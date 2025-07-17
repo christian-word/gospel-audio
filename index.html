@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gospel Voice Madia</title>
+  <title>Gospel Voice Media</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet"/>
     <style>
         :root {
             --primary: #00f2fe;
             --secondary: #4facfe;
             --accent: #f05a7b;
-            --dark: #0f0f1a;
+            --dark: #1a1a2e;
             --light: #f0f8ff;
+            --background: #16213e;
+            --card-bg: rgba(26, 26, 46, 0.8);
             --neon-glow: 0 0 10px rgba(0, 242, 254, 0.7);
         }
         
@@ -23,14 +25,14 @@
         }
         
         body {
-            background: var(--dark);
+            background: var(--background);
             color: var(--light);
             min-height: 100vh;
             overflow-x: hidden;
             perspective: 1000px;
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(79, 172, 254, 0.15) 0%, transparent 30%),
-                radial-gradient(circle at 80% 70%, rgba(240, 90, 123, 0.15) 0%, transparent 30%);
+                radial-gradient(circle at 20% 30%, rgba(79, 172, 254, 0.12) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(240, 90, 123, 0.12) 0%, transparent 30%);
         }
         
         .parallax-bg {
@@ -43,7 +45,7 @@
             background-image: 
                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="20" cy="20" r="0.5" fill="%2300f2fe"/><circle cx="50" cy="80" r="0.5" fill="%234facfe"/><circle cx="80" cy="30" r="0.5" fill="%23f05a7b"/></svg>');
             background-size: 2px 2px;
-            opacity: 0.3;
+            opacity: 0.25;
         }
         
         .container {
@@ -88,10 +90,11 @@
         
         .subtitle {
             font-size: 1.2rem;
-            opacity: 0.8;
+            opacity: 0.75;
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
+            color: var(--light);
         }
         
         .media-grid {
@@ -102,15 +105,15 @@
         }
         
         .media-card {
-            background: rgba(15, 15, 26, 0.7);
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 40px 30px;
             text-decoration: none;
             color: var(--light);
-            border: 1px solid rgba(79, 172, 254, 0.2);
+            border: 1px solid rgba(79, 172, 254, 0.25);
             box-shadow: 
-                0 5px 15px rgba(0, 0, 0, 0.3),
-                inset 0 0 20px rgba(0, 242, 254, 0.05);
+                0 5px 15px rgba(0, 0, 0, 0.2),
+                inset 0 0 20px rgba(0, 242, 254, 0.08);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
@@ -126,7 +129,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(0, 242, 254, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 180, 216, 0.08) 0%, transparent 70%);
             transform: rotate(45deg);
             transition: all 0.6s ease;
             opacity: 0;
@@ -135,10 +138,10 @@
         .media-card:hover {
             transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
             box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 30px rgba(0, 242, 254, 0.2),
-                inset 0 0 30px rgba(79, 172, 254, 0.1);
-            border-color: rgba(79, 172, 254, 0.4);
+                0 20px 40px rgba(0, 0, 0, 0.15),
+                0 0 30px rgba(0, 180, 216, 0.2),
+                inset 0 0 30px rgba(0, 119, 182, 0.05);
+            border-color: rgba(0, 180, 216, 0.4);
         }
         
         .media-card:hover::before {
@@ -206,7 +209,7 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-            box-shadow: 0 3px 10px rgba(240, 90, 123, 0.3);
+            box-shadow: 0 3px 10px rgba(247, 37, 133, 0.3);
         }
         
         .particles {
@@ -233,7 +236,7 @@
                 opacity: 0;
             }
             10% {
-                opacity: 0.3;
+                opacity: 0.2;
             }
             100% {
                 transform: translateY(-100vh) rotate(720deg);
@@ -300,28 +303,28 @@
   <div class="container">
     <header>
       <h1 class="title">GOSPEL VOICE MEDIA HUB</h1>
-      <p class="subtitle">Пусть всё, что вы услышите и увидите, прославляет Господа. Да будет всё во славу Божью</p>
+      <p class="subtitle">Підбірка відео та аудіо матеріалів для внутрішнього користування церкви Дім Євангелія м. Суми.</p>
     </header>
 
     <div class="media-grid">
-      <a href="https://christian-word.github.io/gospel-audio/audio.html" class="media-card">
-        <div class="media-badge">НОВОЕ</div>
+      <a href="avPlayer.html" class="media-card">
+        <div class="media-badge">НОВИНКА</div>
         <div class="media-icon">🎧</div>
-        <h3 class="media-title">Подборки Христианских Аудио</h3>
-        <p class="media-desc">Слушайте сборники христианских песен</p>
-        <div class="media-cta">СЛУШАТЬ →</div>
+        <h3 class="media-title">Підбірки Християнського Аудіо</h3>
+        <p class="media-desc">Слухайте збірки християнських пісень, прямі посилання в форматі mp3</p>
+        <div class="media-cta">СЛУХАТИ →</div>
       </a>
 
       <a href="https://christian-word.github.io/gospel-audio/youtue2.html" class="media-card">
         <div class="media-icon">🎥</div>
-        <h3 class="media-title">Видео Подборка</h3>
-        <p class="media-desc">Смотрите сборники христианских видео в формате YouTube</p>
-        <div class="media-cta">СМОТРЕТЬ →</div>
+        <h3 class="media-title">Відео Підбірка</h3>
+        <p class="media-desc">Дивіться збірки християнських відео в форматі YouTube</p>
+        <div class="media-cta">ДИВИТИСЯ →</div>
       </a>
     </div>
 
     <footer>
-      © 2025 Gospel Voice Madia | м. Сумы, © 2025 г.
+      © 2025 Gospel Voice Media | м. Суми, © 2025 р.
     </footer>
   </div>
   <script>
