@@ -1,612 +1,374 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Именинники недели</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .loading {
-      text-align: center;
-      padding: 50px;
-    }
-    .loading-icon {
-      font-size: 4em;
-      margin-bottom: 20px;
-      animation: spin 2s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .loading-text {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-    .error {
-      text-align: center;
-      padding: 50px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 3px solid rgba(255,100,100,0.5);
-      max-width: 600px;
-    }
-    .error-icon {
-      font-size: 4em;
-      margin-bottom: 20px;
-      color: #ff6b6b;
-    }
-    .error-text {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-      font-weight: 600;
-      color: #ff6b6b;
-    }
-    .retry-btn {
-      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-      border: none;
-      color: white;
-      padding: 15px 40px;
-      font-size: 1.1em;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      margin-top: 20px;
-    }
-    .retry-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-    .upload {
-      display: none;
-      border: 3px dashed rgba(255,255,255,0.3);
-      border-radius: 20px;
-      margin: 20px auto;
-      padding: 50px;
-      text-align: center;
-      max-width: 600px;
-      cursor: pointer;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    }
-    .upload:hover {
-      border-color: rgba(255,255,255,0.6);
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-5px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    }
-    .upload-icon {
-      font-size: 4em;
-      margin-bottom: 20px;
-      opacity: 0.8;
-    }
-    .upload-text {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-    .upload-subtext {
-      font-size: 1.1em;
-      opacity: 0.8;
-      margin-bottom: 30px;
-    }
-    .upload-btn {
-      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-      border: none;
-      color: white;
-      padding: 15px 40px;
-      font-size: 1.1em;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .upload-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-      background: linear-gradient(45deg, #ff5252, #d84315);
-    }
-    .slider {
-      display: none;
-      overflow: hidden;
-      width: 100vw;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    }
-    .slides-container {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .slide {
-      min-width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-shrink: 0;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    .card {
-      width: 48%;
-      height: 90%;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: 1px solid rgba(255,255,255,0.2);
-      transition: transform 0.3s ease;
-    }
-    .card:hover {
-      transform: scale(1.02);
-    }
-    .single-card {
-      width: 60%;
-    }
-    iframe {
-      width: 100%;
-      flex: 1;
-      border: none;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    .info {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 1.5em;
-      font-weight: 600;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-    .info strong {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 1.2em;
-      color: #ffd700;
-    }
-    .nav {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-      pointer-events: none;
-      padding: 0 30px;
-      box-sizing: border-box;
-    }
-    .btn {
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      border: none;
-      color: white;
-      font-size: 2em;
-      padding: 20px 25px;
-      cursor: pointer;
-      pointer-events: auto;
-      border-radius: 50%;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.3);
-    }
-    .btn:hover {
-      background: rgba(255,255,255,0.3);
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
-    .slide-counter {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.5);
-      padding: 10px 20px;
-      border-radius: 25px;
-      font-size: 1.1em;
-      backdrop-filter: blur(10px);
-    }
-    .no-birthdays {
-      text-align: center;
-      font-size: 2em;
-      color: #ffd700;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      padding: 50px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .controls {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      display: flex;
-      gap: 15px;
-    }
-    .control-btn {
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      border: none;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.3);
-    }
-    .control-btn:hover {
-      background: rgba(255,255,255,0.3);
-      transform: scale(1.05);
-    }
-    .auto-indicator {
-      position: absolute;
-      top: 30px;
-      left: 30px;
-      background: rgba(0,200,0,0.2);
-      color: #00ff00;
-      padding: 10px 20px;
-      border-radius: 25px;
-      font-size: 0.9em;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(0,255,0,0.3);
-    }
-    .auto-indicator.paused {
-      background: rgba(255,165,0,0.2);
-      color: #ffa500;
-      border-color: rgba(255,165,0,0.3);
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gospel Voice Madia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent: #f05a7b;
+            --dark: #0f0f1a;
+            --light: #f0f8ff;
+            --neon-glow: 0 0 10px rgba(0, 242, 254, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            perspective: 1000px;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(79, 172, 254, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(240, 90, 123, 0.15) 0%, transparent 30%);
+        }
+        
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="20" cy="20" r="0.5" fill="%2300f2fe"/><circle cx="50" cy="80" r="0.5" fill="%234facfe"/><circle cx="80" cy="30" r="0.5" fill="%23f05a7b"/></svg>');
+            background-size: 2px 2px;
+            opacity: 0.3;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5vh 5%;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 8vh;
+            position: relative;
+        }
+        
+        .title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            text-shadow: var(--neon-glow);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            perspective: 1000px;
+        }
+        
+        .media-card {
+            background: rgba(15, 15, 26, 0.7);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: var(--light);
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(0, 242, 254, 0.05);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+            backdrop-filter: blur(10px);
+        }
+        
+        .media-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .media-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(0, 242, 254, 0.2),
+                inset 0 0 30px rgba(79, 172, 254, 0.1);
+            border-color: rgba(79, 172, 254, 0.4);
+        }
+        
+        .media-card:hover::before {
+            opacity: 1;
+            animation: shine 2s infinite;
+        }
+        
+        .media-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            transition: all 0.4s ease;
+            display: inline-block;
+            text-shadow: 0 0 15px currentColor;
+        }
+        
+        .media-card:nth-child(1) .media-icon {
+            color: var(--primary);
+        }
+        
+        .media-card:nth-child(2) .media-icon {
+            color: var(--accent);
+        }
+        
+        .media-card:hover .media-icon {
+            transform: scale(1.2) translateY(-5px);
+        }
+        
+        .media-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .media-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        .media-card:hover .media-title::after {
+            width: 100%;
+        }
+        
+        .media-desc {
+            font-size: 1rem;
+            opacity: 0.7;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .media-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--accent), #ff6b8b);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(240, 90, 123, 0.3);
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shine {
+            0% {
+                transform: rotate(45deg) translate(-30%, -30%);
+            }
+            100% {
+                transform: rotate(45deg) translate(30%, 30%);
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+        
+        /* Анимация входа */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .container > * {
+            animation: fadeInUp 0.8s ease-out both;
+        }
+        
+        .media-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        
+        .media-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        
+        /* Эффект параллакса */
+        @media (hover: hover) {
+            .media-card {
+                transition: transform 0.3s ease;
+            }
+            
+            .media-card:hover {
+                transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            }
+        }
+    </style>
+
 </head>
 <body>
+  <div class="parallax-bg"></div>
+  <div class="particles" id="particles"></div>
+  <div class="container">
+    <header>
+      <h1 class="title">GOSPEL VOICE MEDIA HUB</h1>
+      <p class="subtitle">Пусть всё, что вы услышите и увидите, прославляет Господа. Да будет всё во славу Божью</p>
+    </header>
 
-<div class="loading" id="loading">
-  <div class="loading-icon">🎂</div>
-  <div class="loading-text">Загружаем именинников...</div>
-  <div>Подождите немного</div>
-</div>
+    <div class="media-grid">
+      <a href="avPlayer.html" class="media-card">
+        <div class="media-badge">НОВОЕ</div>
+        <div class="media-icon">🎧</div>
+        <h3 class="media-title">Подборки Христианских Аудио</h3>
+        <p class="media-desc">Слушайте сборники христианских песен</p>
+        <div class="media-cta">СЛУШАТЬ →</div>
+      </a>
 
-<div class="error" id="error" style="display: none;">
-  <div class="error-icon">❌</div>
-  <div class="error-text">Ошибка загрузки данных</div>
-  <div id="error-message">Не удалось загрузить файл photo-database.json</div>
-  <button class="retry-btn" onclick="retryLoad()">🔄 Попробовать снова</button>
-  <button class="retry-btn" onclick="showManualUpload()" style="margin-left: 10px;">📁 Загрузить файл</button>
-</div>
+      <a href="https://christian-word.github.io/gospel-audio/youtue2.html" class="media-card">
+        <div class="media-icon">🎥</div>
+        <h3 class="media-title">Видео Подборка</h3>
+        <p class="media-desc">Смотрите сборники христианских видео в формате YouTube</p>
+        <div class="media-cta">СМОТРЕТЬ →</div>
+      </a>
+    </div>
 
-<div class="upload" id="upload-area">
-  <div class="upload-icon">📁</div>
-  <div class="upload-text">Загрузить файл вручную</div>
-  <div class="upload-subtext">Перетащите JSON-файл с данными именинников</div>
-  <button class="upload-btn" onclick="selectFile()">📁 Выбрать файл</button>
-</div>
-
-<input type="file" id="file-input" accept=".json" style="display:none">
-
-<div class="no-birthdays" id="no-birthdays" style="display: none;">
-  <div style="font-size: 3em; margin-bottom: 20px;">😔</div>
-  <div>Нет именинников на этой неделе</div>
-  <button class="retry-btn" onclick="retryLoad()" style="margin-top: 20px;">🔄 Обновить</button>
-</div>
-
-<div class="slider" id="slider">
-  <div class="auto-indicator" id="auto-indicator">🔄 Автопереключение</div>
-  <div class="controls">
-    <button class="control-btn" onclick="toggleAutoSlide()" id="auto-btn">⏸️ Пауза</button>
-    <button class="control-btn" onclick="showManualUpload()">📁 Загрузить</button>
-    <button class="control-btn" onclick="retryLoad()">🔄 Обновить</button>
+    <footer>
+      © 2025 Gospel Voice Madia | м. Сумы, © 2025 г.
+    </footer>
   </div>
-  <div class="slides-container" id="slides-container">
-    <!-- Слайды по 2 фото добавляются сюда -->
-  </div>
-  <div class="slide-counter" id="slide-counter">1 / 1</div>
-</div>
-
-<div class="nav">
-  <button class="btn" onclick="prevSlide()">❮</button>
-  <button class="btn" onclick="nextSlide()">❯</button>
-</div>
-
-<script>
-  let slideIndex = 0;
-  let slides = [];
-  let people = [];
-  let autoSlideInterval;
-  let isAutoSlideActive = true;
-
-  const loadingEl = document.getElementById('loading');
-  const errorEl = document.getElementById('error');
-  const errorMessage = document.getElementById('error-message');
-  const uploadArea = document.getElementById('upload-area');
-  const fileInput = document.getElementById('file-input');
-  const sliderEl = document.getElementById('slider');
-  const slidesContainer = document.getElementById('slides-container');
-  const slideCounter = document.getElementById('slide-counter');
-  const noBirthdaysEl = document.getElementById('no-birthdays');
-  const autoIndicator = document.getElementById('auto-indicator');
-  const autoBtn = document.getElementById('auto-btn');
-
-  // Автоматическая загрузка при старте
-  window.addEventListener('load', () => {
-    loadData();
-  });
-
-  async function loadData() {
-    try {
-      showLoading();
-      const response = await fetch('photo-database.json');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  <script>
+    // Скрипты частиц и параллакса оставлены без изменений
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = 30;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        const size = Math.random() * 5 + 1;
+        const posX = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = 10 + Math.random() * 20;
+        const color = `hsl(${Math.random() * 60 + 180}, 100%, 70%)`;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.background = color;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        container.appendChild(particle);
       }
-      
-      const data = await response.json();
-      processData(data);
-    } catch (error) {
-      console.error('Ошибка загрузки:', error);
-      showError(error.message);
-    }
-  }
-
-  function showLoading() {
-    hideAll();
-    loadingEl.style.display = 'block';
-  }
-
-  function showError(message) {
-    hideAll();
-    errorMessage.textContent = message;
-    errorEl.style.display = 'block';
-  }
-
-  function showManualUpload() {
-    hideAll();
-    uploadArea.style.display = 'block';
-  }
-
-  function hideAll() {
-    loadingEl.style.display = 'none';
-    errorEl.style.display = 'none';
-    uploadArea.style.display = 'none';
-    sliderEl.style.display = 'none';
-    noBirthdaysEl.style.display = 'none';
-  }
-
-  function retryLoad() {
-    loadData();
-  }
-
-  // Drag & Drop функциональность
-  uploadArea.addEventListener('dragover', e => {
-    e.preventDefault();
-    uploadArea.style.borderColor = 'rgba(255,255,255,0.6)';
-    uploadArea.style.background = 'rgba(255,255,255,0.2)';
-  });
-
-  uploadArea.addEventListener('dragleave', e => {
-    e.preventDefault();
-    uploadArea.style.borderColor = 'rgba(255,255,255,0.3)';
-    uploadArea.style.background = 'rgba(255,255,255,0.1)';
-  });
-
-  uploadArea.addEventListener('drop', e => {
-    e.preventDefault();
-    handleFile(e.dataTransfer.files[0]);
-  });
-
-  function selectFile() {
-    fileInput.click();
-  }
-
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files.length) {
-      handleFile(fileInput.files[0]);
-    }
-  });
-
-  function handleFile(file) {
-    if (!file.name.endsWith('.json')) {
-      alert('Требуется файл формата .json');
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = e => {
-      try {
-        const json = JSON.parse(e.target.result);
-        processData(json);
-      } catch (err) {
-        showError('Ошибка чтения JSON файла');
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  function processData(data) {
-    if (!Array.isArray(data.entries)) {
-      showError('Файл не содержит корректный список "entries"');
-      return;
     }
 
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const offset = (dayOfWeek === 0) ? -6 : (1 - dayOfWeek);
+    function parallaxEffect() {
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        const cards = document.querySelectorAll('.media-card');
+        cards.forEach((card, index) => {
+          const speed = index * 0.1 + 0.1;
+          const xMove = (x - 0.5) * 20 * speed;
+          const yMove = (y - 0.5) * 20 * speed;
+          card.style.transform = `translateY(-10px) rotateX(${yMove}deg) rotateY(${xMove}deg)`;
+        });
+      });
+    }
 
-    const weekDates = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(today);
-      d.setDate(today.getDate() + offset + i);
-      return `${d.getMonth() + 1}-${d.getDate()}`;
+    window.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      parallaxEffect();
+      const cards = document.querySelectorAll('.media-card');
+      cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.15 + 0.3}s`;
+      });
     });
-
-    people = data.entries.filter(p => {
-      const bd = new Date(p.birthdate);
-      const md = `${bd.getMonth() + 1}-${bd.getDate()}`;
-      return weekDates.includes(md);
-    });
-
-    if (!people.length) {
-      hideAll();
-      noBirthdaysEl.style.display = 'block';
-      return;
-    }
-
-    hideAll();
-    sliderEl.style.display = 'block';
-    document.body.style.background = 'none';
-    buildSlides();
-    startAutoSlide();
-  }
-
-  function buildSlides() {
-    slidesContainer.innerHTML = '';
-    slides = [];
-    slideIndex = 0;
-
-    for (let i = 0; i < people.length; i += 2) {
-      const slide = document.createElement('div');
-      slide.className = 'slide';
-
-      // Первое фото
-      const person1 = people[i];
-      const card1 = document.createElement('div');
-      card1.className = 'card';
-      card1.innerHTML = `
-        <iframe src="https://drive.google.com/file/d/${person1.id}/preview" allow="autoplay"></iframe>
-        <div class="info">
-          <strong>${person1.lastname}</strong>
-          <div>${new Date(person1.birthdate).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</div>
-        </div>
-      `;
-      slide.appendChild(card1);
-
-      // Второе фото — если есть
-      const person2 = people[i + 1];
-      if (person2) {
-        const card2 = document.createElement('div');
-        card2.className = 'card';
-        card2.innerHTML = `
-          <iframe src="https://drive.google.com/file/d/${person2.id}/preview" allow="autoplay"></iframe>
-          <div class="info">
-            <strong>${person2.lastname}</strong>
-            <div>${new Date(person2.birthdate).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</div>
-          </div>
-        `;
-        slide.appendChild(card2);
-      } else {
-        // Если только одно фото, делаем его по центру
-        card1.classList.add('single-card');
-      }
-
-      slidesContainer.appendChild(slide);
-      slides.push(slide);
-    }
-
-    updateSlider();
-  }
-
-  function updateSlider() {
-    slidesContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
-    slideCounter.textContent = `${slideIndex + 1} / ${slides.length}`;
-  }
-
-  function nextSlide() {
-    if (slideIndex < slides.length - 1) slideIndex++;
-    else slideIndex = 0;
-    updateSlider();
-  }
-
-  function prevSlide() {
-    if (slideIndex > 0) slideIndex--;
-    else slideIndex = slides.length - 1;
-    updateSlider();
-  }
-
-  function startAutoSlide() {
-    if (isAutoSlideActive) {
-      autoSlideInterval = setInterval(() => {
-        nextSlide();
-      }, 10000);
-      autoIndicator.textContent = '🔄 Автопереключение';
-      autoIndicator.classList.remove('paused');
-      autoBtn.textContent = '⏸️ Пауза';
-    }
-  }
-
-  function stopAutoSlide() {
-    clearInterval(autoSlideInterval);
-    autoIndicator.textContent = '⏸️ Пауза';
-    autoIndicator.classList.add('paused');
-    autoBtn.textContent = '▶️ Старт';
-  }
-
-  function toggleAutoSlide() {
-    isAutoSlideActive = !isAutoSlideActive;
-    if (isAutoSlideActive) {
-      startAutoSlide();
-    } else {
-      stopAutoSlide();
-    }
-  }
-
-  // Управление клавиатурой
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === ' ') {
-      nextSlide();
-      if (isAutoSlideActive) {
-        stopAutoSlide();
-        setTimeout(startAutoSlide, 5000);
-      }
-    }
-    if (e.key === 'ArrowLeft') {
-      prevSlide();
-      if (isAutoSlideActive) {
-        stopAutoSlide();
-        setTimeout(startAutoSlide, 5000);
-      }
-    }
-    if (e.key === 'Escape') {
-      showManualUpload();
-      stopAutoSlide();
-    }
-    if (e.key === 'r' || e.key === 'R') {
-      retryLoad();
-    }
-    if (e.key === 'p' || e.key === 'P') {
-      toggleAutoSlide();
-    }
-  });
-
-  // Останавливаем автоматическое переключение при клике
-  document.addEventListener('click', () => {
-    if (isAutoSlideActive && sliderEl.style.display !== 'none') {
-      stopAutoSlide();
-      setTimeout(startAutoSlide, 5000);
-    }
-  });
-</script>
-
+  </script>
 </body>
 </html>
