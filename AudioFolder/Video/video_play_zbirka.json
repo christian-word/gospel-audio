@@ -5,6 +5,13 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
+        {
+      "title": "Молитесь за друзей",
+      "url": "https://youtu.be/tvFdBn25R7w",
+      "image": "",
+      "duration": 0,
+      "group": "Новые христианские мелодии AI"
+    },
       {
       "title": "Мой Спаситель",
       "url": "https://www.youtube.com/embed/rg-ljXffWz0",
@@ -17,7 +24,7 @@
       "url": "https://youtu.be/F_0JHnn0U-0",
       "image": "",
       "duration": 0,
-      "group": "Поэт Алексей Дунаев"
+      "group": "Слова Алексейя Дунаева"
     },
     {
       "title": "Я силы попросил для ног..",
