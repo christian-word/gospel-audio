@@ -5,7 +5,14 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
-        {
+     {
+      "title": "Когда темно и сердце рвётся: Песня Надежды в Скорби",
+      "url": "https://youtu.be/tvFdBn25R7w",
+      "image": "",
+      "duration": 0,
+      "group": "Христианские мелодии AI - Стихи Сергея"
+    },
+       {
       "title": "Молитесь за друзей",
       "url": "https://youtu.be/tvFdBn25R7w",
       "image": "",
