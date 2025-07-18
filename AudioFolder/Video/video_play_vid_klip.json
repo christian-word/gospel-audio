@@ -5,6 +5,13 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
+      {
+      "title": "Я в Твоей любви нуждаюсь",
+      "url": "https://youtu.be/0-dCE4yQQZg",
+      "image": "",
+      "duration": 0,
+      "group": "Виктория Барладян"
+    },
      {
       "title": "Не забывай, что Бог с тобой",
       "url": "https://youtu.be/WmwM0YVU97k",
