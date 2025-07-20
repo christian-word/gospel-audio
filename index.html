@@ -2,411 +2,601 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gospel Voice Media</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet"/>
-    <style>
-        :root {
-            --primary: #00f2fe;
-            --secondary: #4facfe;
-            --accent: #f05a7b;
-            --dark: #1a1a2e;
-            --light: #f0f8ff;
-            --background: #16213e;
-            --card-bg: rgba(26, 26, 46, 0.8);
-            --neon-glow: 0 0 10px rgba(0, 242, 254, 0.7);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        body {
-            background: var(--background);
-            color: var(--light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            perspective: 1000px;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(79, 172, 254, 0.12) 0%, transparent 30%),
-                radial-gradient(circle at 80% 70%, rgba(240, 90, 123, 0.12) 0%, transparent 30%);
-        }
-        
-        .parallax-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-image: 
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="20" cy="20" r="0.5" fill="%2300f2fe"/><circle cx="50" cy="80" r="0.5" fill="%234facfe"/><circle cx="80" cy="30" r="0.5" fill="%23f05a7b"/></svg>');
-            background-size: 2px 2px;
-            opacity: 0.25;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3vh 5%;
-            position: relative;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 5vh;
-            position: relative;
-        }
-        
-        .title {
-            font-size: clamp(1.8rem, 4vw, 4rem);
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 1rem;
-            text-shadow: var(--neon-glow);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 3px;
-            box-shadow: 0 0 15px var(--primary);
-        }
-        
-        .subtitle {
-            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-            opacity: 0.75;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-            color: var(--light);
-        }
-        
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            perspective: 1000px;
-        }
-        
-        .media-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-decoration: none;
-            color: var(--light);
-            border: 1px solid rgba(79, 172, 254, 0.25);
-            box-shadow: 
-                0 5px 15px rgba(0, 0, 0, 0.2),
-                inset 0 0 20px rgba(0, 242, 254, 0.08);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            will-change: transform;
-            backdrop-filter: blur(10px);
-        }
-        
-        .media-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 180, 216, 0.08) 0%, transparent 70%);
-            transform: rotate(45deg);
-            transition: all 0.6s ease;
-            opacity: 0;
-        }
-        
-        .media-card:hover {
-            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.15),
-                0 0 30px rgba(0, 180, 216, 0.2),
-                inset 0 0 30px rgba(0, 119, 182, 0.05);
-            border-color: rgba(0, 180, 216, 0.4);
-        }
-        
-        .media-card:hover::before {
-            opacity: 1;
-            animation: shine 2s infinite;
-        }
-        
-        .media-icon {
-            font-size: 3.5rem;
-            margin-bottom: 25px;
-            transition: all 0.4s ease;
-            display: inline-block;
-            text-shadow: 0 0 15px currentColor;
-        }
-        
-        .media-card:nth-child(1) .media-icon {
-            color: var(--primary);
-        }
-        
-        .media-card:nth-child(2) .media-icon {
-            color: var(--accent);
-        }
-        
-        .media-card:hover .media-icon {
-            transform: scale(1.2) translateY(-5px);
-        }
-        
-        .media-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .media-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: currentColor;
-            transition: width 0.3s ease;
-        }
-        
-        .media-card:hover .media-title::after {
-            width: 100%;
-        }
-        
-        .media-desc {
-            font-size: 1rem;
-            opacity: 0.7;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .media-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, var(--accent), #ff6b8b);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            box-shadow: 0 3px 10px rgba(247, 37, 133, 0.3);
-        }
-        
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0;
-            animation: float 15s infinite linear;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.2;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes shine {
-            0% {
-                transform: rotate(45deg) translate(-30%, -30%);
-            }
-            100% {
-                transform: rotate(45deg) translate(30%, 30%);
-            }
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 80px;
-            opacity: 0.6;
-            font-size: 0.9rem;
-        }
-        
-        /* Анимация входа */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .container > * {
-            animation: fadeInUp 0.8s ease-out both;
-        }
-        
-        .media-card:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-        
-        .media-card:nth-child(2) {
-            animation-delay: 0.4s;
-        }
-        
-        /* Мобильная оптимизация */
-        @media (max-width: 768px) {
-            .container {
-                padding: 2vh 5%;
-            }
-            
-            header {
-                margin-bottom: 3vh;
-            }
-            
-            .media-grid {
-                gap: 20px;
-            }
-            
-            .media-card {
-                padding: 30px 25px;
-            }
-            
-            .media-icon {
-                font-size: 3rem;
-                margin-bottom: 20px;
-            }
-            
-            .media-title {
-                font-size: 1.3rem;
-            }
-            
-            .media-desc {
-                font-size: 0.9rem;
-            }
-            
-            footer {
-                margin-top: 40px;
-                font-size: 0.8rem;
-            }
-        }
-        
-        /* Эффект параллакса */
-        @media (hover: hover) {
-            .media-card {
-                transition: transform 0.3s ease;
-            }
-            
-            .media-card:hover {
-                transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-            }
-        }
-    </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gospel Voice Media Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --primary: #4d79ff;
+  --secondary: #7fbfff;
+  --accent: #ffd700;
+  --dark: #0f0f23;
+  --darker: #1a1a2e;
+  --card-bg: #16213e;
+  --card-hover: #1e2a54;
+  --text-light: #e4e6ea;
+  --text-secondary: #b8bcc8;
+  --border: #2d3748;
+  --glow: rgba(77, 121, 255, 0.3);
+}
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(77, 121, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(127, 191, 255, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  animation: backgroundShift 20s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+  0%, 100% {
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(77, 121, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(127, 191, 255, 0.08) 0%, transparent 50%);
+  }
+  33% {
+    background: 
+      radial-gradient(circle at 80% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 30% 70%, rgba(77, 121, 255, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 60% 20%, rgba(127, 191, 255, 0.08) 0%, transparent 50%);
+  }
+  66% {
+    background: 
+      radial-gradient(circle at 60% 80%, rgba(127, 191, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 20% 40%, rgba(255, 215, 0, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 60%, rgba(77, 121, 255, 0.08) 0%, transparent 50%);
+  }
+}
+
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: float linear infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3vh 5%;
+  position: relative;
+  z-index: 2;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 5vh;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #4d79ff 0%, #7fbfff 30%, #ffd700 60%, #4d79ff 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  position: relative;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+  background-size: 200% 100%;
+  border-radius: 2px;
+  animation: lineShimmer 3s ease-in-out infinite;
+}
+
+@keyframes lineShimmer {
+  0%, 100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  opacity: 0.9;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.media-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 30px 25px;
+  text-decoration: none;
+  color: var(--text-light);
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.media-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(77, 121, 255, 0.1) 60deg,
+    rgba(255, 215, 0, 0.1) 120deg,
+    rgba(127, 191, 255, 0.1) 180deg,
+    transparent 240deg,
+    rgba(77, 121, 255, 0.1) 300deg,
+    transparent 360deg
+  );
+  animation: rotate 8s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.media-card::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  background: var(--card-bg);
+  border-radius: 19px;
+  z-index: 1;
+}
+
+.media-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.media-card:hover::before {
+  opacity: 1;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.media-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 20px var(--glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: var(--card-hover);
+  border-color: transparent;
+}
+
+.media-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: inline-block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.media-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  position: relative;
+  color: var(--text-light);
+}
+
+.media-desc {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  opacity: 0.9;
+}
+
+.media-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--accent), #ffed4e, var(--accent));
+  background-size: 200% 200%;
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 
+    0 4px 12px rgba(255, 215, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  animation: pulse 2s infinite, badgeShimmer 3s ease-in-out infinite;
+  z-index: 3;
+}
+
+@keyframes badgeShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.media-cta {
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.media-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.media-cta:hover::before {
+  left: 100%;
+}
+
+.media-cta.video {
+  background: linear-gradient(135deg, #4d79ff, #7fbfff);
+  color: white;
+  box-shadow: 0 4px 15px rgba(77, 121, 255, 0.4);
+}
+
+.media-cta.video:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(77, 121, 255, 0.6);
+}
+
+.media-cta.audio {
+  background: linear-gradient(135deg, #ff8a00, #ffc837);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 138, 0, 0.4);
+}
+
+.media-cta.audio:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 138, 0, 0.6);
+}
+
+.media-cta.archive {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4);
+}
+
+.media-cta.archive:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(106, 17, 203, 0.6);
+}
+
+footer {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  border-top: 1px solid var(--border);
+  padding-top: 30px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 2vh 5%;
+  }
+
+  header {
+    margin-bottom: 3vh;
+  }
+
+  .media-card {
+    padding: 25px 20px;
+  }
+
+  .media-icon {
+    font-size: 2.5rem;
+  }
+
+  .media-title {
+    font-size: 1.2rem;
+  }
+
+  .media-desc {
+    font-size: 0.95rem;
+  }
+
+  footer {
+    margin-top: 40px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle {
+    animation: none;
+  }
+  
+  .media-card {
+    transition: none;
+  }
+  
+  .media-badge {
+    animation: none;
+  }
+}
+</style>
 </head>
 <body>
-  <div class="parallax-bg"></div>
-  <div class="particles" id="particles"></div>
-  <div class="container">
-    <header>
-      <h1 class="title">GOSPEL VOICE MEDIA HUB</h1>
-      <p class="subtitle">Підбірка відео та аудіо матеріалів для внутрішнього користування церкви Дім Євангелія м. Суми.</p>
-    </header>
-    <div class="media-grid">
-      <a href="https://christian-word.github.io/gospel-audio/youtue2.html" class="media-card">
-        <div class="media-icon">🎥</div>
-        <h3 class="media-title">Відео Підбірка</h3>
-        <p class="media-desc">Дивіться збірки християнських відео в форматі YouTube</p>
-        <div class="media-cta">ДИВИТИСЯ →</div>
-      </a>
- 
-      <a href="https://christian-word.github.io/gospel-audio/audio.html" class="media-card">
-        <div class="media-badge">НОВИНКА</div>
-        <div class="media-icon">🎧</div>
-        <h3 class="media-title">Підбірки Християнського Аудіо</h3>
-        <p class="media-desc">Слухайте збірки християнських пісень, прямі посилання в форматі mp3</p>
-        <div class="media-cta">СЛУХАТИ →</div>
-      </a>
-   </div>
-    <footer>
-      © 2025 Gospel Voice Media | м. Суми, © 2025 р.
-    </footer>
+  <div id="particles"></div>
+
+<div class="container">
+  <header>
+    <h1 class="title">Gospel Voice Media</h1>
+    <p class="subtitle">Підбірка відео та аудіо матеріалів для внутрішнього користування церкви Дім Євангелія м. Суми.</p>
+  </header>
+
+  <div class="media-grid">
+    <a href="https://christian-word.github.io/gospel-audio/youtue2.html" class="media-card">
+      <div class="media-badge">🎬</div>
+      <div class="media-icon">🎥</div>
+      <h3 class="media-title">Відео Підбірка</h3>
+      <p class="media-desc">Дивіться збірки християнських відео в форматі YouTube</p>
+      <div class="media-cta video">ДИВИТИСЯ →</div>
+    </a>
+
+    <a href="https://christian-word.github.io/gospel-audio/audio.html" class="media-card">
+      <div class="media-badge">НОВЕ</div>
+      <div class="media-icon">🎼</div>
+      <h3 class="media-title">Підбірки Християнського Аудіо</h3>
+      <p class="media-desc">Слухайте збірки християнських пісень, прямі посилання в форматі mp3</p>
+      <div class="media-cta audio">СЛУХАТИ →</div>
+    </a>
+
+    <a href="https://christian-word.github.io/GospelVoice/" class="media-card">
+      <div class="media-badge">АРХІВ</div>
+      <div class="media-icon">📚</div>
+      <h3 class="media-title">Християнський медіа портал</h3>
+      <p class="media-desc">Слухайте збірки християнських пісень, проповеді, відео</p>
+      <div class="media-cta archive">ПЕРЕЙТИ →</div>
+    </a>
   </div>
-  <script>
-    // Скрипты частиц и параллакса оставлены без изменений
-    function createParticles() {
-      const container = document.getElementById('particles');
-      const particleCount = 30;
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        const size = Math.random() * 5 + 1;
-        const posX = Math.random() * 100;
-        const delay = Math.random() * 15;
-        const duration = 10 + Math.random() * 20;
-        const color = `hsl(${Math.random() * 60 + 180}, 100%, 70%)`;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}%`;
-        particle.style.background = color;
-        particle.style.animationDelay = `${delay}s`;
-        particle.style.animationDuration = `${duration}s`;
-        container.appendChild(particle);
-      }
-    }
 
-    function parallaxEffect() {
-      document.addEventListener('mousemove', (e) => {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-        const cards = document.querySelectorAll('.media-card');
-        cards.forEach((card, index) => {
-          const speed = index * 0.1 + 0.1;
-          const xMove = (x - 0.5) * 20 * speed;
-          const yMove = (y - 0.5) * 20 * speed;
-          card.style.transform = `translateY(-10px) rotateX(${yMove}deg) rotateY(${xMove}deg)`;
-        });
-      });
-    }
+  <footer>
+    © 2025 Gospel Voice Media | м. Суми, © 2025 р.
+  </footer>
+</div>
 
-    window.addEventListener('DOMContentLoaded', () => {
-      createParticles();
-      parallaxEffect();
-      const cards = document.querySelectorAll('.media-card');
-      cards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.15 + 0.3}s`;
-      });
+<script>
+function createParticles() {
+  const container = document.getElementById('particles');
+  const particleCount = 40;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    const size = Math.random() * 4 + 1;
+    const posX = Math.random() * 100;
+    const delay = Math.random() * 20;
+    const duration = 15 + Math.random() * 25;
+    
+    // Цвета частиц в соответствии с темой
+    const colors = [
+      'rgba(77, 121, 255, 0.6)',
+      'rgba(127, 191, 255, 0.6)',
+      'rgba(255, 215, 0, 0.6)',
+      'rgba(255, 237, 78, 0.6)'
+    ];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${posX}%`;
+    particle.style.background = color;
+    particle.style.borderRadius = '50%';
+    particle.style.position = 'absolute';
+    particle.style.animationDelay = `${delay}s`;
+    particle.style.animationDuration = `${duration}s`;
+    particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+    
+    container.appendChild(particle);
+  }
+}
+
+function parallaxEffect() {
+  document.addEventListener('mousemove', (e) => {
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+    const cards = document.querySelectorAll('.media-card');
+    
+    cards.forEach((card, index) => {
+      const speed = (index + 1) * 0.05;
+      const xMove = (x - 0.5) * 10 * speed;
+      const yMove = (y - 0.5) * 10 * speed;
+      
+      card.style.transform += ` translate(${xMove}px, ${yMove}px)`;
     });
-  </script>
+  });
+}
+
+// Добавляем эффект свечения при наведении
+function addGlowEffect() {
+  const cards = document.querySelectorAll('.media-card');
+  
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.filter = 'brightness(1.1) saturate(1.2)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.filter = 'brightness(1) saturate(1)';
+    });
+  });
+}
+
+// Добавляем интерактивные световые эффекты
+function addInteractiveLights() {
+  const cards = document.querySelectorAll('.media-card');
+  
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const deltaX = (x - centerX) / centerX;
+      const deltaY = (y - centerY) / centerY;
+      
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+      
+      // Создаем световое пятно в точке курсора
+      const spotlight = `radial-gradient(circle 100px at ${x}px ${y}px, rgba(77, 121, 255, 0.15), transparent)`;
+      card.style.background = `${spotlight}, var(--card-bg)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.background = 'var(--card-bg)';
+    });
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  createParticles();
+  parallaxEffect();
+  addGlowEffect();
+  addInteractiveLights();
+});
+
+// Добавляем плавное появление элементов при загрузке
+window.addEventListener('load', () => {
+  const cards = document.querySelectorAll('.media-card');
+  
+  cards.forEach((card, index) => {
+    setTimeout(() => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(50px)';
+      card.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      
+      requestAnimationFrame(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      });
+    }, index * 200);
+  });
+});
+</script>
 </body>
 </html>
