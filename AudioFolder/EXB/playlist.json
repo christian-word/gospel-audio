@@ -15,7 +15,7 @@
   {
     "title": "Тимофій, Юлія та Владислав Охріменки",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Охр_04.08.25.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/ico/ohrim.jpg",
+    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohrim2.jpg",
     "duration": 252,
     "group": "Охріменки"
   },
@@ -29,7 +29,7 @@
   {
     "title": "Тимофій, Юлія та Владислав Охріменки",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Влад%20Тима%20Юля_27.07.25.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/ico/ohrim.jpg",
+    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohrim2.jpg",
     "duration": 176,
     "group": "Охріменки"
   },
@@ -50,7 +50,7 @@
      {
       "title": "Если кажется",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Если%20кажется,%20что%20небо%20закрывается.mp3",
-      "image": "https://christian-word.github.io/gospel-audio/ico/ohrim.jpg",
+     "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohrim2.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -78,7 +78,7 @@
     {
       "title": "Висит страдая, распят Христос",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Висит%20страдая,%20распят%20Христос.mp3",
-      "image": "https://christian-word.github.io/gospel-audio/ico/ohrim.jpg",
+      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/ohrim2.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -231,6 +231,7 @@
     }
   ]
 }
+
 
 
 
