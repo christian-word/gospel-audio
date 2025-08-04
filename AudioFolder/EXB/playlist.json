@@ -8,49 +8,49 @@
     {
     "title": "До тебе Господь у молитві йдемо",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/До%20тебе%20Господь%20у%20молитві%20йдемо.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/  ",
+    "image": "https://christian-word.github.io/info-pages/ico-msg/gurt.jpg",
     "duration": 0,
     "group": "Unknown"
   },
   {
     "title": "Тимофій, Юлія та Владислав Охріменки",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Охр_04.08.25.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/  ",
+    "image": "https://christian-word.github.io/info-pages/ico-msg/gurt.jpg",
     "duration": 252,
     "group": "Охріменки"
   },
   {
     "title": "Милість",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Милість.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/  ",
+    "image": "https://christian-word.github.io/info-pages/ico-msg/gurt.jpg",
     "duration": 208,
     "group": "Гурт"
   },
   {
     "title": "Тимофій, Юлія та Владислав Охріменки",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Влад%20Тима%20Юля_27.07.25.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/  ",
+    "image": "https://christian-word.github.io/info-pages/ico-msg/gurt.jpg",
     "duration": 176,
     "group": "Охріменки"
   },
   {
     "title": "Хай буде ім'я Бога благословенне",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Хай%20буде%20ім'я%20Бога%20благословенне.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/  ",
+    "image": "https://christian-word.github.io/info-pages/ico-msg/gurt.jpg",
     "duration": 273,
     "group": "Гурт"
   },
   {
     "title": "Господь є добрий Пастир мій",
     "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Господь%20є%20добрий%20Пастир%20мій.mp3",
-    "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/  ",
+    "image": "https://christian-word.github.io/info-pages/ico-msg/gurt.jpg",
     "duration": 176,
     "group": "Гурт"
   },
      {
       "title": "Если кажется",
       "url": "https://raw.githubusercontent.com/christian-word/gospel-audio/main/AudioFolder/EXB/Если%20кажется,%20что%20небо%20закрывается.mp3",
-      "image": "https://christian-word.github.io/gospel-audio/AudioFolder/EXB/ico/",
+      "image": "https://christian-word.github.io/info-pages/ico-msg/gurt.jpg",
       "duration": 0,
       "group": "Охріменки"
     },
@@ -231,4 +231,5 @@
     }
   ]
 }
+
 
