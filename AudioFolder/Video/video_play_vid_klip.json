@@ -5,6 +5,13 @@
     "pauseBetweenTracks": 0
   },
   "playlist": [
+     {
+      "title": "Между мною и Тобой",
+      "url": "https://youtu.be/3NJr--p4zk0",
+      "image": "",
+      "duration": 0,
+      "group": "Виктория Барладян"
+    },
     {
       "title": "Спокій живий",
       "url": "https://youtu.be/KuVMASkUihs",
@@ -147,4 +154,5 @@
     } 
   ]
 }
+
 
