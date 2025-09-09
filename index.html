@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gospel Audio Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        #albums {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .album {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: pointer;
+            text-align: center;
+            width: 150px;
+        }
+        .album img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        #current-album {
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        #tracks {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .track {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+        audio {
+            display: block;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 400px;
+        }
+        @media (max-width: 600px) {
+            .album {
+                width: 100%;
+            }
+            .track {
+                flex-direction: column;
+                text-align: center;
+            }
+            button, a {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Gospel Audio Albums</h1>
+    <div id="albums"></div>
+    <div id="current-album"></div>
+    <div id="tracks"></div>
+    <audio id="player" controls onended="playNext()"></audio>
+
+    <script>
+        const repo = 'christian-word/gospel-audio';
+        const branch = 'main';
+        const audioFolder = 'AudioFolder';
+        const rawBase = `https://raw.githubusercontent.com/${repo}/${branch}/`;
+        const apiBase = `https://api.github.com/repos/${repo}/contents/`;
+
+        let currentPlaylist = [];
+        let currentIndex = 0;
+
+        async function loadAlbums() {
+            const response = await fetch(apiBase + audioFolder);
+            const data = await response.json();
+            const albumsDiv = document.getElementById('albums');
+
+            for (let item of data) {
+                if (item.type === 'dir') {
+                    // Загружаем содержимое альбома, чтобы найти иконку в папке ico
+                    const albumContentsResp = await fetch(apiBase + item.path);
+                    const contentsData = await albumContentsResp.json();
+                    let iconUrl = null;
+
+                    for (let subItem of contentsData) {
+                        if (subItem.name === 'ico' && subItem.type === 'dir') {
+                            const icoResp = await fetch(apiBase + subItem.path);
+                            const icoData = await icoResp.json();
+                            for (let icoItem of icoData) {
+                                if (icoItem.name.endsWith('.jpg') || icoItem.name.endsWith('.png')) {
+                                    iconUrl = rawBase + icoItem.path;
+                                    break;
+                                }
+                            }
+                            if (iconUrl) break;
+                        }
+                    }
+
+                    const albumDiv = document.createElement('div');
+                    albumDiv.className = 'album';
+                    if (iconUrl) {
+                        const img = document.createElement('img');
+                        img.src = iconUrl;
+                        albumDiv.appendChild(img);
+                    } else {
+                        albumDiv.innerHTML = '🎵<br>';
+                    }
+                    const nameP = document.createElement('p');
+                    nameP.innerText = item.name;
+                    albumDiv.appendChild(nameP);
+                    albumDiv.onclick = () => loadTracks(item.path, item.name);
+                    albumsDiv.appendChild(albumDiv);
+                }
+            }
+        }
+
+        async function loadTracks(path, albumName) {
+            const response = await fetch(apiBase + path);
+            const data = await response.json();
+            const tracksDiv = document.getElementById('tracks');
+            tracksDiv.innerHTML = '';
+            document.getElementById('current-album').innerText = `Альбом: ${albumName}`;
+            let zipUrl = null;
+            currentPlaylist = [];
+
+            data.forEach(item => {
+                if (item.type === 'file') {
+                    if (item.name.endsWith('.mp3')) {
+                        const trackUrl = rawBase + item.path;
+                        currentPlaylist.push({ name: item.name, url: trackUrl });
+                        const trackDiv = document.createElement('div');
+                        trackDiv.className = 'track';
+                        const playBtn = document.createElement('button');
+                        playBtn.innerText = `Играть: ${item.name}`;
+                        playBtn.onclick = () => playTrack(currentPlaylist.length - 1);
+                        const dlLink = document.createElement('a');
+                        dlLink.href = trackUrl;
+                        dlLink.download = item.name;
+                        dlLink.innerText = 'Скачать';
+                        trackDiv.appendChild(playBtn);
+                        trackDiv.appendChild(dlLink);
+                        tracksDiv.appendChild(trackDiv);
+                    } else if (item.name.endsWith('.zip')) {
+                        zipUrl = rawBase + item.path;
+                    }
+                }
+            });
+
+            if (zipUrl) {
+                const dlAlbum = document.createElement('a');
+                dlAlbum.href = zipUrl;
+                dlAlbum.download = `${albumName}.zip`;
+                dlAlbum.innerText = 'Скачать весь альбом';
+                dlAlbum.style.display = 'block';
+                dlAlbum.style.textAlign = 'center';
+                dlAlbum.style.margin = '20px 0';
+                tracksDiv.appendChild(dlAlbum);
+            }
+
+            tracksDiv.style.display = 'block';
+        }
+
+        function playTrack(index) {
+            currentIndex = index;
+            const player = document.getElementById('player');
+            player.src = currentPlaylist[index].url;
+            player.play();
+        }
+
+        function playNext() {
+            if (currentIndex < currentPlaylist.length - 1) {
+                playTrack(currentIndex + 1);
+            }
+        }
+
+        loadAlbums();
+    </script>
+</body>
+</html>
